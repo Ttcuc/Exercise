@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Canvas验证码</title>
+		<script type="text/javascript">
+			function getColor(){
+				var r = Math.floor(Math.random()*256);
+				var g = Math.floor(Math.random()*256);
+				var b = Math.floor(Math.random()*256);
+				return "rgb("+r+","+g+","+b+")";
+			}
+			
+			window.onload=function(){
+				console.log(getColor());
+				var canvas = document.getElementById("canvas");//获取canvas,演员
+				var context = canvas.getContext("2d");//演员表演的舞台
+				canvas.width=120;//宽度,不写单位,默认就是px
+				canvas.height=40;//高度
+				context.strokeRect(0,0,120,40);
+				
+				var aCode = [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+				console.log(aCode.length)
+				for(var i = 0;i<4;i++){
+					var deg = Math.random()*90*Math.PI/180;
+					var x = 25+i*20;
+					var y= 20+Math.random()*10;
+					var index = Math.floor(Math.random()*aCode.length);//获取随机索引值
+					
+					var txt = aCode[index];//获取索引对应的值
+					context.font="bold 20px 微软雅黑";
+					context.fillStyle = getColor();
+					//旋转
+					context.translate(x,y);
+					context.rotate(deg);context.fillText(txt,0,0);
+					context.rotate(-deg);context.translate(-x,-y);
+				}
+				
+				//干扰线
+				for(var i= 0;i<7;i++){
+					context.strokeStyle = getColor();
+					context.beginPath();
+					context.moveTo(Math.random()*120,Math.random()*40);
+					context.lineTo(Math.random()*120,Math.random()*40);
+					context.stroke();
+				}
+				//干扰点
+				for(var i= 0;i<25;i++){
+					var x = Math.random()*120;var y = Math.random()*40;
+					context.strokeStyle = getColor();
+					context.beginPath();
+					context.moveTo(x,y);context.lineTo(x+1,y+1);
+					context.stroke();
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+	</body>
+</html>
